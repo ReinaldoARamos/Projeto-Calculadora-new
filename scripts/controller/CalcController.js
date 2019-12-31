@@ -26,7 +26,7 @@ class CalcController {
         //nele nós usamos o slipt para que ele tranfome o click drag que está no
         //inicialize button em uma array, separada por um espaço
         events.split(' ').forEach(event => {
-            element.addEventListener(event, fn, false)
+            element.addEventListener(event, fn, false);
 
         }
         )

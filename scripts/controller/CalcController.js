@@ -2,7 +2,7 @@ class CalcController {
     constructor() {
         //this sendo usado para tranformar a variável em um atributo para 
         //poder se chamado fora da classe
-        this._operacao = [];
+        this._operacao = [1];
         this._displayCalcEl = document.querySelector("#display");
         this._DateEl = document.querySelector("#data");
         this._TimeEl = document.querySelector("#hora");
@@ -47,7 +47,7 @@ class CalcController {
         //um número ou sinal
         return this._operacao[this._operacao.length - 1]
     }
-    isOperator(value){
+    isOperator(value) {
         return (['+', '-', '/', '*', '%'].indexOf(value) > -1);
         //Nesse método, ele irá pegar o valor que o usuário colocar na calculadora
         //e caso ele seja um operador, vai executar o if no addOperation
@@ -57,28 +57,46 @@ class CalcController {
         if (isNaN(this.getlastOperation())) {
             //a função isNAN significa Is not a Number, ou seja, esse if será 
             //executado caso a última operação NÃO seja um número
-            
             if (this.isOperator(value)) {
                 //trocar o operador caso o último index seja uma operacao
                 this._operacao[this._operacao.length - 1] = value;
                 //tranforma a última posição do array na operação selecionada pelo user
             } else {
-                //outra coisa
+                //Programar depois
+
             }
         } else {
-            //esse else aqui serve para que caso o último operador seja um número
-            //ele faça uma concatenação com o último número, já que é passado
-            //para string pelo "toString"
-            let newValue = this.getlastOperation().toString() + value.toString;
+            let newValue = this.getlastOperation().toString() + value.toString();
             //O push pega um valor espcífico e joga no final de um array;    
-            this._operacao.push(value);
+            this._operacao.push(newValue);
         }
 
         console.log(this._operacao)
-       
+
     }
+    InicializeButtons() {
+        //esse código aqui faz com que a função de click passe por todos os 
+        //elementos dos botões para que haja o evento do click
+        //Isso é possível graças ao uso do ForEach, que pega todos as informações
+        //de dentro dos botões
+        let buttons = document.querySelectorAll("#buttons > g , #parts > g");
+        // > significa tags filhas de tal coisa
+        buttons.forEach((btn, index) => {
+            this.addEventListenerAll(btn, 'click drag', e => {
+                //esse console log com o bnt.class name serve para que quando 
+                //o console retorne um valor, venha apenas o nome da classe
 
-
+                //tranformar o nome dos botões em variáveis para puxar o valor
+                //em funções
+                let textBtn = btn.className.baseVal.replace("btn-", "");//lançada como parâmetro
+                this.execBtn(textBtn);//manda o parámetro do método
+            })
+            this.addEventListenerAll(btn, "mouseouver mouseup mousedown", e => {
+                btn.style.cursor = "pointer";
+            });
+        })
+    }
+    
     execBtn(value) {
         switch (value) {
             case 'ac':
@@ -126,7 +144,7 @@ class CalcController {
             case '8':
             case '9':
                 this.addoperation(parseInt(value));
-               
+
                 break;
             //esses cases dos números serve para que quando clicarmos nos
             //números eles retornem os valores dos dígitos da calculadora
@@ -136,27 +154,7 @@ class CalcController {
         }
 
     }
-    InicializeButtons() {
-        //esse código aqui faz com que a função de click passe por todos os 
-        //elementos dos botões para que haja o evento do click
-        //Isso é possível graças ao uso do ForEach, que pega todos as informações
-        //de dentro dos botões
-        let buttons = document.querySelectorAll("#buttons > g , #parts > g");
-        buttons.forEach((btn, index) => {
-            this.addEventListenerAll(btn, 'click drag', e => {
-                //esse console log com o bnt.class name serve para que quando 
-                //o console retorne um valor, venha apenas o nome da classe
 
-                //tranformar o nome dos botões em variáveis para puxar o valor
-                //em funções
-                let textBtn = btn.className.baseVal.replace("btn-", "");//lançada como parâmetro
-                this.execBtn(textBtn);//manda o parámetro do método
-            })
-            this.addEventListenerAll(btn, "mouseouver mouseup mousedown", e => {
-                btn.style.cursor = "pointer";
-            });
-        })
-    }
     SetDisplayTime() {
         //ao invés de copiar esse código aqui de baixo no Set Interval
         //podemos apenas criar um método e chamar ele no Set Interval

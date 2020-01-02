@@ -41,7 +41,10 @@ class CalcController {
     setError() {
         this.displayCalc = "Error"
     }
+    setLastOperator(value) {
+        this._operacao[this._operacao.length - 1] = value;
 
+    }
     getlastOperation() {
         //essa função que paga o último valor do array e verifica se é um
         //um número ou sinal
@@ -53,28 +56,28 @@ class CalcController {
         //e caso ele seja um operador, vai executar o if no addOperation
         //já que ele vai retornar ou true ou false
     }
+
     addoperation(value) {
-        console.log('b', this.getlastOperation())
         if (isNaN(this.getlastOperation())) {
             //a função isNAN significa Is not a Number, ou seja, esse if será 
             //executado caso a última operação NÃO seja um número
             if (this.isOperator(value)) {
                 //trocar o operador caso o último index seja uma operacao
-                this._operacao[this._operacao.length - 1] = value;
+                this._setLastOperator(value);
                 //tranforma a última posição do array na operação selecionada pelo user
-            } else if(isNaN(value)) {
-            
+            } else if (isNaN(value)) {
+
                 //Programar depois
                 console.log(value);
 
-            }else{
+            } else {
                 this._operacao.push(value);
             }
 
         } else {
             let newValue = this.getlastOperation().toString() + value.toString();
-            //O push pega um valor espcífico e joga no final de um array;    
-            this._operacao.push(newValue);
+            this.setLastOperator(newValue);
+            //troca o útimo valor do array pelo novo valor concatenado
         }
 
         console.log(this._operacao)

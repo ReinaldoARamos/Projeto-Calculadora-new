@@ -76,7 +76,7 @@ class CalcController {
 
         } else {
             let newValue = this.getlastOperation().toString() + value.toString();
-            this.setLastOperator(newValue);
+            this.setLastOperator(parseInt(newValue));
             //troca o útimo valor do array pelo novo valor concatenado
         }
 

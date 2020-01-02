@@ -2,7 +2,7 @@ class CalcController {
     constructor() {
         //this sendo usado para tranformar a variável em um atributo para 
         //poder se chamado fora da classe
-        this._operacao = [1];
+        this._operacao = [];
         this._displayCalcEl = document.querySelector("#display");
         this._DateEl = document.querySelector("#data");
         this._TimeEl = document.querySelector("#hora");
@@ -48,12 +48,13 @@ class CalcController {
         return this._operacao[this._operacao.length - 1]
     }
     isOperator(value) {
-        return (['+', '-', '/', '*', '%'].indexOf(value) > -1);
+        return (['+', '-', '/', '*', '%', '.'].indexOf(value) > -1);
         //Nesse método, ele irá pegar o valor que o usuário colocar na calculadora
         //e caso ele seja um operador, vai executar o if no addOperation
         //já que ele vai retornar ou true ou false
     }
     addoperation(value) {
+        console.log('b', this.getlastOperation())
         if (isNaN(this.getlastOperation())) {
             //a função isNAN significa Is not a Number, ou seja, esse if será 
             //executado caso a última operação NÃO seja um número
@@ -61,10 +62,15 @@ class CalcController {
                 //trocar o operador caso o último index seja uma operacao
                 this._operacao[this._operacao.length - 1] = value;
                 //tranforma a última posição do array na operação selecionada pelo user
-            } else {
+            } else if(isNaN(value)) {
+            
                 //Programar depois
+                console.log(value);
 
+            }else{
+                this._operacao.push(value);
             }
+
         } else {
             let newValue = this.getlastOperation().toString() + value.toString();
             //O push pega um valor espcífico e joga no final de um array;    
@@ -96,7 +102,7 @@ class CalcController {
             });
         })
     }
-    
+
     execBtn(value) {
         switch (value) {
             case 'ac':
@@ -108,26 +114,30 @@ class CalcController {
                 break;
 
             case 'soma':
-
+                this.addoperation("+");
                 break;
 
             case 'subtracao':
-
+                this.addoperation("-");
                 break;
 
             case 'multiplicacao':
-
+                this.addoperation("*");
                 break;
 
             case 'porcento':
-
+                this.addoperation("%");
                 break;
 
             case 'igual':
 
                 break;
-            case 'divisao':
 
+            case 'divisao':
+                this.addoperation("/");
+                break;
+            case 'ponto':
+                this.addoperation(".");
                 break;
             default:
                 this.setError;

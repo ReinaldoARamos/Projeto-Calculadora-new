@@ -57,27 +57,39 @@ class CalcController {
         //já que ele vai retornar ou true ou false
     }
 
+    pushOperation(value) {
+        this._operacao.push(value);
+        if (this._operacao.length > 3) {
+            this.calc();
+        }
+    }
+
+    calc(value) {
+        let Last = this._operacao.pop(value);
+        console.log(Last);
+
+    };
+
     addoperation(value) {
-        console.log("A", value, isNaN(this.getlastOperation()))
         if (isNaN(this.getlastOperation())) {
             //a função isNAN significa Is not a Number, ou seja, esse if será 
             //executado caso a última operação NÃO seja um número
             if (this.isOperator(value)) {
                 //trocar o operador caso o último index seja uma operacao
-                this._operacao[this._operacao.length - 1] = value;
+                this.setLastOperator(value);
                 //tranforma a última posição do array na operação selecionada pelo user
             } else if (isNaN(value)) {
-                //Outra coisa
-                console.log(value);
+               
+                console.log("outra coisa",value);
 
             } else {
-                this._operacao.push(value);
+                this.pushOperation(value);
             }
 
         } else {
 
             if (this.isOperator(value)) {
-                this._operacao.push(value);
+                this.pushOperation(value);
 
             }
             else {

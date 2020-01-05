@@ -1,0 +1,22 @@
+{
+  "name": "curso-_js_calculadora",
+  "version": "1.0.0",
+  "description": "Projeto de calculadora em POO",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hcodebr/curso-javascript-projeto-calculadora-clone.git"
+  },
+  "author": "Reinaldo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hcodebr/curso-javascript-projeto-calculadora-clone/issues"
+  },
+  "homepage": "https://github.com/hcodebr/curso-javascript-projeto-calculadora-clone#readme",
+  "devDependencies": {
+    "prettier": "^1.19.1"
+  }
+}

@@ -77,16 +77,21 @@ class CalcController {
   calc(value) {
     let Last = this._operacao.pop(value);
     let result = eval(this._operacao.join(""));
-    //o join vai basicamente juntar todos os elementos do array em uma string
-    //dentro dos parenteses vc passa o que vai juntar elas, nesse caso, seria um
-    //vazio
-    //além disso, ele já executa a operação(graças ao eval que interpreta o código)
-    //automaticamente após receber mais elementos no array
-    this._operacao = [result, Last];
-    //o array operação vai ser igual ao resultado da operacao(ficando com apenas 1 elemento)
-    //e o outro valor vai ser o Last, o último valor digitado(que no caso seria o quarto
-    //valor do array)
+    if (Last == "%") {
+      result /= 100;
+      //this._operacao = [result];
+    } else {
+      this._operacao = [result, Last];
+    }
+
     this.SetNumberToDisplay();
+  }
+
+  CalcIgual() {
+    let resultado = eval(this._operacao.join(""));
+    this._operacao = [resultado];
+    this.SetNumberToDisplay();
+    console.log(this._operacao);
   }
 
   addoperation(value) {
@@ -168,6 +173,7 @@ class CalcController {
         break;
 
       case "igual":
+        this.CalcIgual();
         break;
 
       case "divisao":

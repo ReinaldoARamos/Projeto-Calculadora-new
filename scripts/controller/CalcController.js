@@ -4,7 +4,7 @@ class CalcController {
     //this sendo usado para tranformar a variável em um atributo para
     //poder se chamado fora da classe
     this._operacao = [];
-    this._displayCalcEl = document.querySelector("#display");
+    this._displayCalc = document.querySelector("#display");
     this._DateEl = document.querySelector("#data");
     this._TimeEl = document.querySelector("#hora");
     this.Inicialize();
@@ -30,6 +30,8 @@ class CalcController {
   }
   ClearAll() {
     this._operacao = [];
+    this.displayCalc = null;
+    console.log("apaguei", this._operacao);
   }
   ClearEntry() {
     this._operacao.pop(); //o pop é uma função nativa do Js que apaga o último valor
@@ -41,6 +43,7 @@ class CalcController {
   setLastOperator(value) {
     this._operacao[this._operacao.length - 1] = value;
   }
+
   getlastOperation() {
     //essa função que paga o último valor do array e verifica se é um
     //um número ou sinal
@@ -51,6 +54,17 @@ class CalcController {
     //Nesse método, ele irá pegar o valor que o usuário colocar na calculadora
     //e caso ele seja um operador, vai executar o if no addOperation
     //já que ele vai retornar ou true ou false
+  }
+  SetNumberToDisplay() {
+    let LastNumber;
+
+    for (let i = this._operacao.length - 1; i >= 0; i--) {
+      if (!this.isOperator(this._operacao[i])) {
+        LastNumber = this._operacao[i];
+        break;
+      }
+    }
+    this.displayCalc = LastNumber;
   }
 
   pushOperation(value) {
@@ -66,11 +80,13 @@ class CalcController {
     //o join vai basicamente juntar todos os elementos do array em uma string
     //dentro dos parenteses vc passa o que vai juntar elas, nesse caso, seria um
     //vazio
-    //além disso, ele já executa a operação automaticamente após receber mais elementos no array
+    //além disso, ele já executa a operação(graças ao eval que interpreta o código)
+    //automaticamente após receber mais elementos no array
     this._operacao = [result, Last];
     //o array operação vai ser igual ao resultado da operacao(ficando com apenas 1 elemento)
     //e o outro valor vai ser o Last, o último valor digitado(que no caso seria o quarto
     //valor do array)
+    this.SetNumberToDisplay();
   }
 
   addoperation(value) {
@@ -80,11 +96,13 @@ class CalcController {
       if (this.isOperator(value)) {
         //trocar o operador caso o último index seja uma operacao
         this.setLastOperator(value);
+
         //tranforma a última posição do array na operação selecionada pelo user
       } else if (isNaN(value)) {
         console.log("outra coisa", value);
       } else {
         this.pushOperation(value);
+        this.SetNumberToDisplay();
       }
     } else {
       if (this.isOperator(value)) {
@@ -92,7 +110,9 @@ class CalcController {
       } else {
         let newValue = this.getlastOperation().toString() + value.toString();
         this.setLastOperator(parseInt(newValue));
+        this.SetNumberToDisplay();
         //troca o útimo valor do array pelo novo valor concatenado
+        //atualizar display aqui;
       }
     }
 
@@ -200,12 +220,12 @@ class CalcController {
   get displayCalc() {
     //o método get(getter) pega valores do display calc
     //e retorna o valor la de dentro;
-    return this._displayCalcEl.innerHTML;
+    return this._displayCalc.innerHTML;
   }
 
   set displayCalc(value) {
     //o método set(setter) vai atribuir e alterar valores do displayCalc
-    this._displayCalcEl.innerHTML = value;
+    this._displayCalc.innerHTML = value;
   }
   get displayDate() {
     this._DateEl.innerHTML;

@@ -16,6 +16,7 @@ class CalcController {
     setInterval(() => {
       this.SetDisplayTime();
     }, 1000);
+    this.SetNumberToDisplay();
   }
 
   addEventListenerAll(element, events, fn /*nome da função)*/) {
@@ -30,12 +31,13 @@ class CalcController {
   }
   ClearAll() {
     this._operacao = [];
-    this.displayCalc = null;
+    this.SetNumberToDisplay();
     console.log("apaguei", this._operacao);
   }
   ClearEntry() {
     this._operacao.pop(); //o pop é uma função nativa do Js que apaga o último valor
     //de uma array;
+    this.SetNumberToDisplay();
   }
   setError() {
     this.displayCalc = "Error";
@@ -64,6 +66,7 @@ class CalcController {
         break;
       }
     }
+    if (!LastNumber) LastNumber = 0;
     this.displayCalc = LastNumber;
   }
 
@@ -75,24 +78,32 @@ class CalcController {
   }
 
   calc(value) {
-    let Last = this._operacao.pop(value);
+    let Last = "";
+    if (this._operacao.length > 3) {
+      let Last = this._operacao.pop(value);
+      //o Last só recebe o Pop caso a calculadora tenha mais de 3 itens no array
+    }
+
     let result = eval(this._operacao.join(""));
     if (Last == "%") {
       result /= 100;
       //this._operacao = [result];
     } else {
-      this._operacao = [result, Last];
+      this._operacao = [result]; //como o Last é vazio, retiramos ele do array
+      if (Last) this._operacao.push(Last);
+      //e depois damos um push dele dentro do array CASO ele seja alguma coisa.
     }
 
     this.SetNumberToDisplay();
   }
 
-  CalcIgual() {
+  /* CalcIgual() {
     let resultado = eval(this._operacao.join(""));
     this._operacao = [resultado];
     this.SetNumberToDisplay();
     console.log(this._operacao);
   }
+  */
 
   addoperation(value) {
     if (isNaN(this.getlastOperation())) {
@@ -173,7 +184,7 @@ class CalcController {
         break;
 
       case "igual":
-        this.CalcIgual();
+        this.calc();
         break;
 
       case "divisao":

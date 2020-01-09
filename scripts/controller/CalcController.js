@@ -63,13 +63,16 @@ class CalcController {
     let LastItem;
 
     for (let i = this._operacao.length - 1; i >= 0; i--) {
-      if (isOperator) {
-        if (!this.isOperator(this._operacao[i])) {
-          LastItem = this._operacao[i];
-          break;
-        }
+      if (this.isOperator(this._operacao[i]) == isOperator) {
+        LastItem = this._operacao[i];
+        break;
+        //nesse código, basicamente oq aconteceu foi que pegamos o mesmo for
+        //porém, passamos o isOperator(parametro) igual a true
+        //e nesse if, se o isOperator(método) for igual ao isOperator(parametro = true)
+        //ele executa a função dentro do if, no caso LastItem ´= this.operacao[i]
       }
     }
+    return LastItem;
   }
 
   SetNumberToDisplay() {

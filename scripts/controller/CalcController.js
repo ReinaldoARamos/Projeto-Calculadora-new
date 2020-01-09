@@ -100,12 +100,18 @@ class CalcController {
 
   calc(value) {
     let Last = "";
+    this.LastOperator = this.getLastItem();
+
     if (this._operacao.length > 3) {
-      let Last = this._operacao.pop(value);
-      let result = this.getResult();
+      Last = this._operacao.pop(value);
+      this.LastNumber = this.getResult();
       //o let result e last aqui servem para armazenar a operação realizada
       //no cálculo anterior e também o resultado
+    } else if (this._operacao.length == 3) {
+      this.LastNumber = this.getLastItem(false);
     }
+    console.log("Last Operator", this.LastOperator);
+    console.log("Last Numver", this.LastNumber);
 
     let result = this.getResult();
     if (Last == "%") {

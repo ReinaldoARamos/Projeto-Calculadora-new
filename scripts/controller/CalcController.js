@@ -76,15 +76,20 @@ class CalcController {
       this.calc();
     }
   }
+  getResult() {
+    return eval(this._operacao.join(""));
+  }
 
   calc(value) {
     let Last = "";
     if (this._operacao.length > 3) {
       let Last = this._operacao.pop(value);
-      //o Last só recebe o Pop caso a calculadora tenha mais de 3 itens no array
+      let result = this.getResult();
+      //o let result e last aqui servem para armazenar a operação realizada
+      //no cálculo anterior e também o resultado
     }
 
-    let result = eval(this._operacao.join(""));
+    let result = this.getResult();
     if (Last == "%") {
       result /= 100;
       //this._operacao = [result];

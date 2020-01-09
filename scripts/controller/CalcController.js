@@ -4,6 +4,8 @@ class CalcController {
     //this sendo usado para tranformar a variável em um atributo para
     //poder se chamado fora da classe
     this._operacao = [];
+    this.LastNumber = "";
+    this.LastOperator = "";
     this._displayCalc = document.querySelector("#display");
     this._DateEl = document.querySelector("#data");
     this._TimeEl = document.querySelector("#hora");
@@ -57,6 +59,19 @@ class CalcController {
     //e caso ele seja um operador, vai executar o if no addOperation
     //já que ele vai retornar ou true ou false
   }
+  getLastItem(isOperator = true) {
+    let LastItem;
+
+    for (let i = this._operacao.length - 1; i >= 0; i--) {
+      if (isOperator) {
+        if (!this.isOperator(this._operacao[i])) {
+          LastItem = this._operacao[i];
+          break;
+        }
+      }
+    }
+  }
+
   SetNumberToDisplay() {
     let LastNumber;
 

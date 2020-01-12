@@ -87,6 +87,15 @@ class CalcController {
   }
   addDot() {
     let LastOperation = this.getlastOperation();
+    if (
+      typeof LastOperation === "String" &&
+      LastOperation.split("").indexOf(".") > -1
+      //aqui basicamente criei um if que caso o LastOperation seja uma string
+      //E se no index de LastOperation houver um '.'. ele retorna o método(return)
+      //encerra funções);
+    )
+      return;
+
     if (this.isOperator(LastOperation) || !LastOperation) {
       this.pushOperation("0.");
     } else {
@@ -166,7 +175,7 @@ class CalcController {
         this.pushOperation(value);
       } else {
         let newValue = this.getlastOperation().toString() + value.toString();
-        this.setLastOperator(parseFloat(newValue));
+        this.setLastOperator(newValue);
         this.SetNumberToDisplay();
         //troca o útimo valor do array pelo novo valor concatenado
         //atualizar display aqui;

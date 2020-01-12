@@ -33,6 +33,8 @@ class CalcController {
   }
   ClearAll() {
     this._operacao = [];
+    this.LastNumber = "";
+    this.LastOperator = "";
     this.SetNumberToDisplay();
     console.log("apaguei", this._operacao);
   }
@@ -83,6 +85,15 @@ class CalcController {
     console.log(eval(this._operacao.join(""), "a"));
     return eval(this._operacao.join(""));
   }
+  addDot() {
+    let LastOperation = this.getlastOperation();
+    if (this.isOperator(LastOperation) || !LastOperation) {
+      this.pushOperation("0.");
+    } else {
+      this.setLastOperator(LastOperation.toString() + ".");
+    }
+    this.SetNumberToDisplay();
+  }
   getLastItem(isOperator = true) {
     let LastItem;
 
@@ -97,6 +108,7 @@ class CalcController {
       }
       if (!LastItem) {
         LastItem = { isOperator } ? this.LastOperator : this.LastNumber;
+        //if ternário
       }
     }
     return LastItem;
@@ -145,8 +157,6 @@ class CalcController {
         this.setLastOperator(value);
 
         //tranforma a última posição do array na operação selecionada pelo user
-      } else if (isNaN(value)) {
-        console.log("outra coisa", value);
       } else {
         this.pushOperation(value);
         this.SetNumberToDisplay();
@@ -156,7 +166,7 @@ class CalcController {
         this.pushOperation(value);
       } else {
         let newValue = this.getlastOperation().toString() + value.toString();
-        this.setLastOperator(parseInt(newValue));
+        this.setLastOperator(parseFloat(newValue));
         this.SetNumberToDisplay();
         //troca o útimo valor do array pelo novo valor concatenado
         //atualizar display aqui;
@@ -222,7 +232,7 @@ class CalcController {
         this.addoperation("/");
         break;
       case "ponto":
-        this.addoperation(".");
+        this.addDot();
         break;
       default:
         this.setError;

@@ -1,4 +1,4 @@
-//CURSO AULA 16 10:05
+//CURSO AULA 19 16:42, erro de concatenação
 class CalcController {
   constructor() {
     //this sendo usado para tranformar a variável em um atributo para
@@ -54,25 +54,10 @@ class CalcController {
     return this._operacao[this._operacao.length - 1];
   }
   isOperator(value) {
-    return ["+", "-", "/", "*", "%", "."].indexOf(value) > -1;
+    return ["+", "-", "/", "*", "%"].indexOf(value) > -1;
     //Nesse método, ele irá pegar o valor que o usuário colocar na calculadora
     //e caso ele seja um operador, vai executar o if no addOperation
     //já que ele vai retornar ou true ou false
-  }
-  getLastItem(isOperator = true) {
-    let LastItem;
-
-    for (let i = this._operacao.length - 1; i >= 0; i--) {
-      if (this.isOperator(this._operacao[i]) == isOperator) {
-        LastItem = this._operacao[i];
-        break;
-        //nesse código, basicamente oq aconteceu foi que pegamos o mesmo for
-        //porém, passamos o isOperator(parametro) igual a true
-        //e nesse if, se o isOperator(método) for igual ao isOperator(parametro = true)
-        //ele executa a função dentro do if, no caso LastItem ´= this.operacao[i]
-      }
-    }
-    return LastItem;
   }
 
   SetNumberToDisplay() {
@@ -95,9 +80,27 @@ class CalcController {
     }
   }
   getResult() {
+    console.log(eval(this._operacao.join(""), "a"));
     return eval(this._operacao.join(""));
   }
+  getLastItem(isOperator = true) {
+    let LastItem;
 
+    for (let i = this._operacao.length - 1; i >= 0; i--) {
+      if (this.isOperator(this._operacao[i]) == isOperator) {
+        LastItem = this._operacao[i];
+        break;
+        //nesse código, basicamente oq aconteceu foi que pegamos o mesmo for
+        //porém, passamos o isOperator(parametro) igual a true
+        //e nesse if, se o isOperator(método) for igual ao isOperator(parametro = true)
+        //ele executa a função dentro do if, no caso LastItem ´= this.operacao[i]
+      }
+      if (!LastItem) {
+        LastItem = { isOperator } ? this.LastOperator : this.LastNumber;
+      }
+    }
+    return LastItem;
+  }
   calc(value) {
     let Last = "";
     this.LastOperator = this.getLastItem();
@@ -105,10 +108,9 @@ class CalcController {
     if (this._operacao.length > 3) {
       Last = this._operacao.pop(value);
       this.LastNumber = this.getResult();
-      //o let result e last aqui servem para armazenar a operação realizada
-      //no cálculo anterior e também o resultado
     } else if (this._operacao.length == 3) {
-      this.LastNumber = this.getLastItem(false);
+      this.LastNumber = this.getLastItem(false); //é false pois é um número, e nao
+      //um sinal
     }
     console.log("Last Operator", this.LastOperator);
     console.log("Last Numver", this.LastNumber);

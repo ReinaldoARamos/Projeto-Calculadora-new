@@ -208,9 +208,15 @@ class CalcController {
     }
   }
   getResult() {
-    console.log(eval(this._operacao.join(""), "a"));
-    return eval(this._operacao.join(""));
+    try {
+      return eval(this._operacao.join(""));
+    } catch (e) {
+      setTimeout(() => {
+        this.setError();
+      }, 1);
+    }
   }
+
   addDot() {
     let LastOperation = this.getlastOperation();
     if (

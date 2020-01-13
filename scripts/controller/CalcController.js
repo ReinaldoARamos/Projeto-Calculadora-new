@@ -3,7 +3,9 @@ class CalcController {
   constructor() {
     //this sendo usado para tranformar a variável em um atributo para
     //poder se chamado fora da classe
+    this.audioONorOff = false; //armazena a informação se o audio ta ou nao ligado
     this._operacao = [];
+    this.audio = new Audio("ohno.mp3");
     this.LastNumber = "";
     this.LastOperator = "";
     this._displayCalc = document.querySelector("#display");
@@ -21,6 +23,16 @@ class CalcController {
     }, 1000);
     this.SetNumberToDisplay();
     this.pasteFromClipboard();
+
+    document.querySelectorAll(".btn-ac").forEach(btn => {
+      //selecionamos os btn-ac, botão da frente e atrás, e como são 2, colocamos
+      //forEach para se aplicar para os 2, além disso, colocamos uma Arrow
+      //function no btn
+      btn.addEventListener("dblclick", e => {
+        this.toggleAudio();
+        //quando os 2 btn receberam o evento de click duplo, o toggleAudio ativa
+      });
+    });
   }
   copytoClipboard() {
     let input = document.createElement("input");
@@ -31,6 +43,30 @@ class CalcController {
     input.select(); //para ele pegar tudo que está selecionado
     document.execCommand("Copy"); //para copiar tudo selecionado
   }
+  toggleAudio() {
+    //jeito mais resumido, já que igualamos ele a false, porém ele pode virar
+    //true dependendo dos eventos, false + false = true.
+    this.audioONorOff = !this.audioONorOff;
+    /*jeito com if ternário
+    this.audioONorOff = (this.audioONorOff) ? false : true;
+    /*
+
+    /*jeito com if
+    if (this.audioONorOff) {
+      this.audioONorOff = false;
+    } else {
+      this.audioONorOff = true;
+    }
+    */
+  }
+  playAudio() {
+    if ((this.audioONorOff = true)) {
+      this.audio.play();
+      this.audio.currentTime = 0; //desse jeito quando o audio for tocado denovo
+      //ele sempre será 0, ou seja, irá reiniciar.
+    }
+  }
+
   pasteFromClipboard() {
     document.addEventListener("paste", e => {
       let text = e.clipboardData.getData("Text"); //função para pegar o valor que está
@@ -43,6 +79,7 @@ class CalcController {
   }
   initKeyboard() {
     addEventListener("keyup", e => {
+      this.playAudio();
       switch (e.key) {
         case "Escape":
           this.ClearAll();
@@ -298,6 +335,7 @@ class CalcController {
   }
 
   execBtn(value) {
+    this.playAudio();
     switch (value) {
       case "ac":
         this.ClearAll();

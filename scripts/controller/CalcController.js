@@ -50,17 +50,18 @@ class CalcController {
     /*jeito com if ternário
     this.audioONorOff = (this.audioONorOff) ? false : true;
     /*
-
-    /*jeito com if
+*/
+    /*
     if (this.audioONorOff) {
       this.audioONorOff = false;
     } else {
       this.audioONorOff = true;
     }
-    */
+  }
+  */
   }
   playAudio() {
-    if ((this.audioONorOff = true)) {
+    if (this.audioONorOff == true) {
       this.audio.play();
       this.audio.currentTime = 0; //desse jeito quando o audio for tocado denovo
       //ele sempre será 0, ou seja, irá reiniciar.
@@ -420,6 +421,10 @@ class CalcController {
 
   set displayCalc(value) {
     //o método set(setter) vai atribuir e alterar valores do displayCalc
+    if (value.toString().length > 10) {
+      this.setError();
+      return false;
+    }
     this._displayCalc.innerHTML = value;
   }
   get displayDate() {

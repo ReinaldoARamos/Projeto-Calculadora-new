@@ -12,6 +12,7 @@ class CalcController {
     this.Inicialize();
     this._currentDate;
     this.InicializeButtons();
+    this.initKeyboard();
   }
   Inicialize() {
     this.SetDisplayTime();
@@ -19,6 +20,68 @@ class CalcController {
       this.SetDisplayTime();
     }, 1000);
     this.SetNumberToDisplay();
+  }
+  initKeyboard() {
+    addEventListener("keyup", e => {
+      switch (e.key) {
+        case "Escape":
+          this.ClearAll();
+          break;
+
+        case "Backspace":
+          this.ClearEntry();
+          break;
+
+        case "+":
+          this.addoperation("+");
+          break;
+
+        case "-":
+          this.addoperation("-");
+          break;
+
+        case "*":
+          this.addoperation("*");
+          break;
+
+        case "%":
+          this.addoperation("%");
+          break;
+
+        case "Enter":
+          this.calc();
+          break;
+
+        case "/":
+          this.addoperation("/");
+          break;
+        case ".":
+        case ",":
+          this.addDot();
+          break;
+        default:
+          this.setError;
+          break;
+
+        case "0":
+        case "1":
+        case "2":
+        case "3":
+        case "4":
+        case "5":
+        case "6":
+        case "7":
+        case "8":
+        case "9":
+          this.addoperation(parseInt(e.key));
+
+          break;
+
+        //esses cases dos números serve para que quando clicarmos nos
+        //números eles retornem os valores dos dígitos da calculadora
+        //como números.
+      }
+    });
   }
 
   addEventListenerAll(element, events, fn /*nome da função)*/) {
@@ -131,12 +194,14 @@ class CalcController {
       this.LastNumber = this.getResult();
     } else if (this._operacao.length == 3) {
       this.LastNumber = this.getLastItem(false); //é false pois é um número, e nao
+
       //um sinal
     }
     console.log("Last Operator", this.LastOperator);
     console.log("Last Numver", this.LastNumber);
 
     let result = this.getResult();
+
     if (Last == "%") {
       result /= 100;
       //this._operacao = [result];

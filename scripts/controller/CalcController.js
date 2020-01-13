@@ -20,6 +20,26 @@ class CalcController {
       this.SetDisplayTime();
     }, 1000);
     this.SetNumberToDisplay();
+    this.pasteFromClipboard();
+  }
+  copytoClipboard() {
+    let input = document.createElement("input");
+    input.value = this.displayCalc;
+    document.body.appendChild(input);
+    //colocamos ele dentro do body, pois o input existe, mas não pode ser selecionado
+    //então colocamos o appendChild para pegar o input como filho.
+    input.select(); //para ele pegar tudo que está selecionado
+    document.execCommand("Copy"); //para copiar tudo selecionado
+  }
+  pasteFromClipboard() {
+    document.addEventListener("paste", e => {
+      let text = e.clipboardData.getData("Text"); //função para pegar o valor que está
+      //no clipboard, no caso, o que foi copiado(tem que passar text como
+      //parâmetro).
+      this.displayCalc = parseFloat(text);
+      if (isNaN(this.displayCalc)) this.setError();
+      console.log(text);
+    });
   }
   initKeyboard() {
     addEventListener("keyup", e => {
@@ -74,7 +94,12 @@ class CalcController {
         case "8":
         case "9":
           this.addoperation(parseInt(e.key));
-
+          break;
+        case "c":
+          if (e.ctrlKey) {
+            this.copytoClipboard();
+            input.remove();
+          }
           break;
 
         //esses cases dos números serve para que quando clicarmos nos

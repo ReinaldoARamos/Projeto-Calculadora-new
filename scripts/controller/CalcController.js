@@ -193,9 +193,9 @@ class CalcController {
   SetNumberToDisplay() {
     let LastNumber;
 
-    for (let i = this._operacao.length - 1; i >= 0; i--) {
-      if (!this.isOperator(this._operacao[i])) {
-        LastNumber = this._operacao[i];
+    for (const operacao of this._operacao) {
+      if (!this.isOperator(operacao)) {
+        LastNumber = operacao;
         break;
       }
     }
@@ -251,7 +251,11 @@ class CalcController {
         //ele executa a função dentro do if, no caso LastItem ´= this.operacao[i]
       }
       if (!LastItem) {
-        LastItem = { isOperator } ? this.LastOperator : this.LastNumber;
+        // de forma getal normalmente comentamos *em cima* do codigo.
+        // isso eh um bug, tenho bastante certeza.
+        // let d = false
+        // { d } ? // sempre true!
+        LastItem = isOperator ? this.LastOperator : this.LastNumber;
         //if ternário
       }
     }
@@ -297,7 +301,9 @@ class CalcController {
   */
 
   addoperation(value) {
-    if (isNaN(this.getlastOperation())) {
+    // variavel pra melhorar legibillidade do codigo
+    let lastOperationIsSign = isNaN(this.getlastOperation());
+    if (lastOperationIsSign) {
       //a função isNAN significa Is not a Number, ou seja, esse if será
       //executado caso a última operação NÃO seja um número
       // de forma geral eh ruim codar assim. Oq significa que nao eh um numero?

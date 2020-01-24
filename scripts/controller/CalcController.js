@@ -209,11 +209,16 @@ class CalcController {
       this.calc();
     }
   }
+
   getResult() {
+    // remove 0 na frente causando erros
+    let safeOperation = this._operacao.map(operacao => /^0[0-9]+/.test(operacao) ? operacao.replace(/^0/, '') : operacao)
     try {
-      return eval(this._operacao.join(""));
+      return eval(safeOperation.join(""));
     } catch (e) {
+      console.log({ error: e })
       setTimeout(() => {
+        // porque o setTimeout com 1 segundo?
         this.setError();
       }, 1);
     }

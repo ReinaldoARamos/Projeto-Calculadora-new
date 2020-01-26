@@ -1,3 +1,4 @@
+// legal entender porque o CalcController existe aqui
 window.calculator = new CalcController();
 
 calculator.displayCalc;

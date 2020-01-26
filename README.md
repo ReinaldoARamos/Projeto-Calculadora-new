@@ -1,3 +1,11 @@
+# Instalacao
+
+- [instale node](https://nodejs.org/pt-br/download/package-manager/)
+- clone o projeto
+- cd na pasta
+- `npm i` para instalar dependencias
+- abra o arquivo index.html no seu browser (possivel so arrastar)
+
 # Explicação sobre o app da Calculadora
 
 Esse projeto construído usando POO, tanto que todo o código JS foi todo feito dentro da classe (CalcController)

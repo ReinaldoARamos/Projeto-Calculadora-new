@@ -3,22 +3,23 @@ class CalcController {
   constructor() {
     //this sendo usado para tranformar a variável em um atributo para
     //poder se chamado fora da classe
-    this.audioONorOff = false; //armazena a informação se o audio ta ou nao ligado
+    this.audioONorOff = false; //armazena a informação se o audio ta ou nao ligado <- isso eh obvio!
     this._operacao = [];
     this.audio = new Audio("ohno.mp3");
     this.LastNumber = "";
     this.LastOperator = "";
-    this._displayCalc = document.querySelector("#display");
+    this._displayCalc = document.querySelector("#display"); // uso de API do browser, interessante enteder sobre e tb sobre Jquery (so por curiosidade)
     this._DateEl = document.querySelector("#data");
     this._TimeEl = document.querySelector("#hora");
     this.Inicialize();
     this._currentDate;
     this.InicializeButtons();
-    this.initKeyboard();
+    this.initKeyboard(); // manter codigo ou em ptbr ou ingles
   }
   Inicialize() {
     this.SetDisplayTime();
     setInterval(() => {
+      // legal!
       this.SetDisplayTime();
     }, 1000);
     this.SetNumberToDisplay();
@@ -27,7 +28,7 @@ class CalcController {
     document.querySelectorAll(".btn-ac").forEach(btn => {
       //selecionamos os btn-ac, botão da frente e atrás, e como são 2, colocamos
       //forEach para se aplicar para os 2, além disso, colocamos uma Arrow
-      //function no btn
+      //function (legal!) no btn
       btn.addEventListener("dblclick", e => {
         this.toggleAudio();
         //quando os 2 btn receberam o evento de click duplo, o toggleAudio ativa
@@ -121,7 +122,7 @@ class CalcController {
           this.setError;
           break;
 
-        case "0":
+        case "0": // keyboardi parece bugado
         case "1":
         case "2":
         case "3":
@@ -147,12 +148,13 @@ class CalcController {
     });
   }
 
-  addEventListenerAll(element, events, fn /*nome da função)*/) {
+  addEventListenerAll(element, events, fn /*nome da função, na verdade a referencia dela mesmo*/) {
     //Vamos lá...esse código é um método que pega como parâmetros os
     //elementos, eventos e o nome da função. (ela ta pegando esses valores)
     //do addEventListenetALL() do inicalizeButtos)
     //nele nós usamos o slipt para que ele tranfome o click drag que está no
     //inicialize button em uma array, separada por um espaço
+    // nao agrega mto passar um array de eventos aqui, vc poderia chamar essa funcao 2x.
     events.split(" ").forEach(event => {
       element.addEventListener(event, fn, false);
     });
@@ -166,7 +168,7 @@ class CalcController {
   }
   ClearEntry() {
     this._operacao.pop(); //o pop é uma função nativa do Js que apaga o último valor
-    //de uma array;
+    //de uma array; ler sobre Array.prototype.pop
     this.SetNumberToDisplay();
   }
   setError() {
@@ -182,7 +184,7 @@ class CalcController {
     return this._operacao[this._operacao.length - 1];
   }
   isOperator(value) {
-    return ["+", "-", "/", "*", "%"].indexOf(value) > -1;
+    return ["+", "-", "/", "*", "%"].indexOf(value) > -1; // legal!
     //Nesse método, ele irá pegar o valor que o usuário colocar na calculadora
     //e caso ele seja um operador, vai executar o if no addOperation
     //já que ele vai retornar ou true ou false
@@ -191,9 +193,9 @@ class CalcController {
   SetNumberToDisplay() {
     let LastNumber;
 
-    for (let i = this._operacao.length - 1; i >= 0; i--) {
-      if (!this.isOperator(this._operacao[i])) {
-        LastNumber = this._operacao[i];
+    for (const operacao of this._operacao) {
+      if (!this.isOperator(operacao)) {
+        LastNumber = operacao;
         break;
       }
     }
@@ -207,11 +209,16 @@ class CalcController {
       this.calc();
     }
   }
+
   getResult() {
+    // remove 0 na frente causando erros
+    let safeOperation = this._operacao.map(operacao => /^0[0-9]+/.test(operacao) ? operacao.replace(/^0/, '') : operacao)
     try {
-      return eval(this._operacao.join(""));
+      return eval(safeOperation.join(""));
     } catch (e) {
+      console.log({ error: e })
       setTimeout(() => {
+        // porque o setTimeout com 1 segundo?
         this.setError();
       }, 1);
     }
@@ -224,7 +231,7 @@ class CalcController {
       LastOperation.split("").indexOf(".") > -1
       //aqui basicamente criei um if que caso o LastOperation seja uma string
       //E se no index de LastOperation houver um '.'. ele retorna o método(return)
-      //encerra funções);
+      //encerra funções); solucao legal!
     )
       return;
 
@@ -235,10 +242,11 @@ class CalcController {
     }
     this.SetNumberToDisplay();
   }
-  getLastItem(isOperator = true) {
+  getLastItem(isOperator = true /* legal uso de default params aqui */) {
     let LastItem;
 
     for (let i = this._operacao.length - 1; i >= 0; i--) {
+      // for of, evitar forzao classico em JS, so em casos bem especificos
       if (this.isOperator(this._operacao[i]) == isOperator) {
         LastItem = this._operacao[i];
         break;
@@ -248,18 +256,24 @@ class CalcController {
         //ele executa a função dentro do if, no caso LastItem ´= this.operacao[i]
       }
       if (!LastItem) {
-        LastItem = { isOperator } ? this.LastOperator : this.LastNumber;
+        // de forma getal normalmente comentamos *em cima* do codigo.
+        // isso eh um bug, tenho bastante certeza.
+        // let d = false
+        // { d } ? // sempre true!
+        LastItem = isOperator ? this.LastOperator : this.LastNumber;
         //if ternário
       }
     }
     return LastItem;
   }
   calc(value) {
+    // bem confuso de ler o codigo dessa function de forma geral
     let Last = "";
     this.LastOperator = this.getLastItem();
 
     if (this._operacao.length > 3) {
-      Last = this._operacao.pop(value);
+      // oq signifca ter length > 3?
+      Last = this._operacao.pop(value); // porque um pop?
       this.LastNumber = this.getResult();
     } else if (this._operacao.length == 3) {
       this.LastNumber = this.getLastItem(false); //é false pois é um número, e nao
@@ -275,7 +289,7 @@ class CalcController {
       result /= 100;
       //this._operacao = [result];
     } else {
-      this._operacao = [result]; //como o Last é vazio, retiramos ele do array
+      this._operacao = [result]; //como o Last é vazio, retiramos ele do array, na verdade vc criou um array.
       if (Last) this._operacao.push(Last);
       //e depois damos um push dele dentro do array CASO ele seja alguma coisa.
     }
@@ -292,15 +306,19 @@ class CalcController {
   */
 
   addoperation(value) {
-    if (isNaN(this.getlastOperation())) {
+    // variavel pra melhorar legibillidade do codigo
+    let lastOperationIsSign = isNaN(this.getlastOperation());
+    if (lastOperationIsSign) {
       //a função isNAN significa Is not a Number, ou seja, esse if será
       //executado caso a última operação NÃO seja um número
+      // de forma geral eh ruim codar assim. Oq significa que nao eh um numero?
+      // talvez porque seja um sinal?
       if (this.isOperator(value)) {
         //trocar o operador caso o último index seja uma operacao
         this.setLastOperator(value);
 
         //tranforma a última posição do array na operação selecionada pelo user
-      } else {
+      } else { // if else if um dentro do outro fica confuso rapido
         this.pushOperation(value);
         this.SetNumberToDisplay();
       }
@@ -392,7 +410,7 @@ class CalcController {
       case "7":
       case "8":
       case "9":
-        this.addoperation(parseInt(value));
+        this.addoperation(parseInt(value)); // legal!
 
         break;
       //esses cases dos números serve para que quando clicarmos nos
@@ -404,10 +422,10 @@ class CalcController {
   SetDisplayTime() {
     //ao invés de copiar esse código aqui de baixo no Set Interval
     //podemos apenas criar um método e chamar ele no Set Interval
-    this.displayDate = this.currentDate.toLocaleDateString("PT-BR", {
+    this.displayDate = this.currentDate.toLocaleDateString("PT-BR", { // legal!
       day: "2-digit",
       month: "long",
-      year: "numeric",
+      year: "numeric"
     });
     this.displayTime = this.currentDate.toLocaleTimeString("PT-BR");
   }
@@ -419,7 +437,7 @@ class CalcController {
     this._TimeEl.innerHTML = value;
   }
 
-  get displayCalc() {
+  get displayCalc() { // legal uso de get set
     //o método get(getter) pega valores do display calc
     //e retorna o valor la de dentro;
     return this._displayCalc.innerHTML;
